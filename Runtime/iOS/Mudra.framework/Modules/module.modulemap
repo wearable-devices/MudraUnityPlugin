@@ -1,0 +1,4 @@
+framework module Mudra {
+  header "Mudra-Swift.h"
+  requires objc
+}

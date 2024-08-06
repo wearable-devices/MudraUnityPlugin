@@ -1,0 +1,154 @@
+{
+    "name": "MudraControls",
+    "maps": [
+        {
+            "name": "New action map",
+            "id": "e2e82f14-9dc4-46d2-ba6a-9d13eb986a86",
+            "actions": [
+                {
+                    "name": "Pressure",
+                    "type": "Value",
+                    "id": "beed56d6-80aa-4c86-8ee2-9479fbcf676b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Gesture",
+                    "type": "Value",
+                    "id": "806bc70c-90d3-4e58-930c-c519f3aa46c4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MouseDelta",
+                    "type": "Value",
+                    "id": "19cee8c5-2de0-4180-9e77-80135e88afc3",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Quaternion",
+                    "type": "Value",
+                    "id": "3324e197-9791-4e75-b09a-efd68e33e32a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "3a6448cf-63ff-4da5-a6fb-da53cb6d143c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MousePC",
+                    "type": "Value",
+                    "id": "9d52d129-563f-493d-bc88-1d6de57efe9f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MousePCPos",
+                    "type": "Value",
+                    "id": "5933ce3b-e592-4b4e-8748-4658842ce7b7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "3ceb7363-e41c-400d-8263-3ce803a75c07",
+                    "path": "<MudraDevice>/pressure",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pressure",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e22fe60d-6b05-4886-91e3-cdc280f2af8b",
+                    "path": "<MudraDevice>/lastGesture",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Gesture",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d7a4043a-49ca-4598-9393-7c16a2712266",
+                    "path": "<MudraDevice>/mousePosDelta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseDelta",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4aadf111-9129-4f8d-b249-8853e659da62",
+                    "path": "<MudraDevice>/quaternion",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Quaternion",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8bd667eb-045c-4225-a84d-f34bf7d11de0",
+                    "path": "<MudraDevice>/click",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "da6d6b1d-4ce5-4c85-91ba-505cce0cbe73",
+                    "path": "<Mouse>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MousePC",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1d0f518b-08ad-4e4d-84b2-c4ff2ae66f2d",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MousePCPos",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

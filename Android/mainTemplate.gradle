@@ -1,0 +1,56 @@
+apply plugin: 'com.android.library'
+**APPLY_PLUGINS**
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+   
+
+  implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'org.jetbrains:annotations:23.0.0'
+//Cloud support:
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.6'
+
+// Bluetooth support:
+    implementation 'no.nordicsemi.android:ble:2.6.0'
+    implementation 'no.nordicsemi.android.support.v18:scanner:1.6.0'
+ 
+
+**DEPS**}
+
+android {
+    compileSdkVersion **APIVERSION**
+    buildToolsVersion '**BUILDTOOLS**'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        minSdkVersion **MINSDKVERSION**
+        targetSdkVersion **TARGETSDKVERSION**
+        ndk {
+            abiFilters **ABIFILTERS**
+        }
+        versionCode **VERSIONCODE**
+        versionName '**VERSIONNAME**'
+        consumerProguardFiles 'proguard-unity.txt'**USER_PROGUARD**
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    aaptOptions {
+        noCompress = **BUILTIN_NOCOMPRESS** + unityStreamingAssets.tokenize(', ')
+        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~"
+    }**PACKAGING_OPTIONS**
+}**REPOSITORIES**
+**IL_CPP_BUILD_SETUP**
+**SOURCE_BUILD_SETUP**
+**EXTERNAL_SOURCES**
