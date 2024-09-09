@@ -17,45 +17,40 @@ public class MudraUnityManager : MonoBehaviour
 
     public static PluginPlatform plugin;
 
-    [SerializeField] float mousespeed;
-    [SerializeField] int AirMouseSpeed = 5;
+    [SerializeField] string licenseEmail;
     [SerializeField] HandType Hand = HandType.Left;
 
-    [SerializeField] bool AirMouseState = false;
-    [SerializeField] bool Pressure = false;
-    [SerializeField] bool Gesture = false;
-    [SerializeField] bool Quaternion = false;
+    [SerializeField] bool navigationState = false;
+    [SerializeField] bool pressureState = false;
+    [SerializeField] bool gestureState = false;
+    [SerializeField] bool quaternionState = false;
 
     [SerializeField] UnityEvent<int> OnConnectedEvent;
-    [SerializeField] UnityEvent<int> OnDisConnectedEvent;
-
+    [SerializeField] UnityEvent<int> OnDisconnectedEvent;
+    [SerializeField] UnityEvent<int> onDeviceConnectedByAndroidOS = new UnityEvent<int>();
+    [SerializeField] UnityEvent<int> onDeviceFailedToConnect = new UnityEvent<int>();
+    [SerializeField] UnityEvent<int> onDeviceConnecting = new UnityEvent<int>();
+    [SerializeField] UnityEvent<int> onDeviceDisconnecting = new UnityEvent<int>();
 
 
 
     public void SetNavigationState(bool state, int index)
     {
-        PluginPlatform.devices[index].isNavigationEnabled = state;
+        plugin.setNavigationActive(state, index);
     }
     public void SetPressureState(bool state, int index)
     {
-        PluginPlatform.devices[index].IsFingerTipPressureEnabled = state;
+        plugin.setPressureActive(state, index);
     }
     public void SetGestureState(bool state, int index)
     {
-        PluginPlatform.devices[index].IsGestureEnabled = state;
+        plugin.setGestureActive(state, index);
     }
     public void SetQuaternionState(bool state, int index)
     {
-        PluginPlatform.devices[index].IsImuQuaternionEnabled = state;
+        plugin.SetQuaternionActive(state, index);
     }
 
-    public void SetAirMouseSpeed(int speed, int index)
-    {
-        if (plugin == null) return;
-
-        plugin.SetNavigationSpeed(speed, index);
-        AirMouseSpeed = speed;
-    }
     public void SetHand(int hand, int index)
     {
         if (plugin == null) return;
@@ -72,7 +67,7 @@ public class MudraUnityManager : MonoBehaviour
         if (firmwareTarget == FirmwareTarget.NAVIGATION_TO_APP)
             PluginPlatform.devices[index].deviceData.sendToApp = active;
 
-        plugin.setFirmwareTarget(firmwareTarget,active,index);
+        plugin.setFirmwareTarget(firmwareTarget, active, index);
     }
 
     public void SendFirmwareCommand(byte[] command)
@@ -144,6 +139,7 @@ public class MudraUnityManager : MonoBehaviour
 
         if (plugin == null)
         {
+            PluginPlatform.licenseEmail = licenseEmail;
 #if (UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN) || NETFX_CORE || UNITY_WSA || UNITY_WSA_10_0
             //  _pluginPlatform = new WindowsPlugin();
 #elif (UNITY_ANDROID)
@@ -157,36 +153,39 @@ Debug.Log("Create New Unity Plugin");
         }
         Debug.Log("Init");
         if (plugin != null)
+        {
             plugin.Init();
 
+            plugin.OnDeviceDisconnected.AddListener(OnDeviceDisconnected);
+            
+        }
     }
     public void OnDeviceConnected(int i)
     {
-        PluginPlatform.devices[i].isNavigationEnabled = AirMouseState;
-        PluginPlatform.devices[i].IsFingerTipPressureEnabled = Pressure;
-        PluginPlatform.devices[i].IsGestureEnabled = Gesture;
-        PluginPlatform.devices[i].IsImuQuaternionEnabled = Quaternion;
+        plugin.setNavigationActive(navigationState, i);
+        plugin.setPressureActive(pressureState, i);
+        plugin.setGestureActive(gestureState, i);
+        SetQuaternionState(quaternionState, i);
 
         SetFirmwareTarget(FirmwareTarget.NAVIGATION_TO_APP, false, i);
         SetFirmwareTarget(FirmwareTarget.NAVIGATION_TO_HID, false, i);
 
-        SetAirMouseSpeed(AirMouseSpeed, i);
         SetHand((int)Hand, i);
 
         OnConnectedEvent.Invoke(i);
     }
-    public void SetDeviceMode(DeviceMode mode,int index)
+    public void SetDeviceMode(DeviceMode mode, int index)
     {
         plugin.SetDeviceMode(mode, index);
 
     }
     public void SetDeviceMode(int mode)
     {
-        plugin.SetDeviceMode((DeviceMode)mode,0);
+        plugin.SetDeviceMode((DeviceMode)mode, 0);
     }
     public void OnDeviceDisconnected(int i)
     {
-        OnDisConnectedEvent.Invoke(i);
+        OnDisconnectedEvent.Invoke(i);
     }
     public void GetDevices()
     {

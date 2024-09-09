@@ -6,6 +6,7 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.InputSystem.Layouts;
 using UnityEngine.Events;
+using Mudra.Unity;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -49,6 +50,27 @@ namespace Mudra.Unity
         public Vector2Control mousePosDelta { get; private set; }
         public QuaternionControl quaternion { get; private set; }
         public ButtonControl click { get; private set; }
+
+        public int batteryLevel
+        {
+            get => MudraUnityManager.plugin.GetBatteryLevel(identifier.id);
+        }
+
+        public string firmwareVersion
+        {
+            get => MudraUnityManager.plugin.GetFirmwareVersion(identifier.id);
+        }
+
+        public long getSerialNumber
+        {
+            get => MudraUnityManager.plugin.GetSerialNumber(identifier.id);
+        }
+
+        public string deviceNumber
+        {
+            get => MudraUnityManager.plugin.GetDeviceNumber(identifier.id);
+        }
+
         public MudraDevice(DeviceIdentifier identifier)
         {
             this.identifier = identifier;
@@ -59,75 +81,6 @@ namespace Mudra.Unity
         {
             Init();
             Debug.Log("CreatedMudraDevice");
-        }
-
-        protected bool _isGestureEnabled = true;
-        public bool IsGestureEnabled
-        {
-            get { return _isGestureEnabled; }
-            set
-            {
-                if (_isGestureEnabled != value)
-                {
-                    _isGestureEnabled = value;
-                    MudraUnityManager.plugin.UpdateOnGestureReadyCallback(identifier.id);
-                }
-            }
-        }
-
-        protected bool _isFingerTipPressureEnabled = true;
-        public bool IsFingerTipPressureEnabled
-        {
-            get { return _isFingerTipPressureEnabled; }
-            set
-            {
-                if (_isFingerTipPressureEnabled != value)
-                {
-                    _isFingerTipPressureEnabled = value;
-                    MudraUnityManager.plugin.UpdateOnFingerTipPressureCallback(identifier.id);
-                }
-            }
-        }
-
-        protected bool _isImuQuaternionEnabled = true;
-        public bool IsImuQuaternionEnabled
-        {
-            get { return _isImuQuaternionEnabled; }
-            set
-            {
-                if (_isImuQuaternionEnabled != value)
-                {
-                    _isImuQuaternionEnabled = value;
-                    MudraUnityManager.plugin.UpdateOnQuaternionReadyCallback(identifier.id);
-                }
-            }
-        }
-        protected bool _isNavigationEnabled = true;
-        public bool isNavigationEnabled
-        {
-            get { return _isNavigationEnabled; }
-            set
-            {
-                if (_isNavigationEnabled != value)
-                {
-                    _isNavigationEnabled = value;
-                    MudraUnityManager.plugin.UpdateNavigationCallback(identifier.id);
-                }
-            }
-        }
-        protected bool _isImuAccRawEnabled = true;
-
-        public bool IsAccRawEnabled
-        {
-            get { return _isImuAccRawEnabled; }
-            set
-            {
-                if (_isImuAccRawEnabled != value)
-                {
-                    _isImuAccRawEnabled = value;
-                    MudraUnityManager.plugin.UpdateOnImuRawCallback(identifier.id);
-                }
-            }
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
