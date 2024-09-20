@@ -27,10 +27,10 @@ public class MudraUnityManager : MonoBehaviour
 
     [SerializeField] UnityEvent<int> OnConnectedEvent;
     [SerializeField] UnityEvent<int> OnDisconnectedEvent;
-    [SerializeField] UnityEvent<int> onDeviceConnectedByAndroidOS = new UnityEvent<int>();
-    [SerializeField] UnityEvent<int> onDeviceFailedToConnect = new UnityEvent<int>();
-    [SerializeField] UnityEvent<int> onDeviceConnecting = new UnityEvent<int>();
-    [SerializeField] UnityEvent<int> onDeviceDisconnecting = new UnityEvent<int>();
+    [SerializeField] UnityEvent<int> OnDeviceConnectedByAndroidOSEvent = new UnityEvent<int>();
+    [SerializeField] UnityEvent<int> OnDeviceFailedToConnectEvent = new UnityEvent<int>();
+    [SerializeField] UnityEvent<int> OnDeviceConnectingEvent = new UnityEvent<int>();
+    [SerializeField] UnityEvent<int> OnDeviceDisconnectingEvent = new UnityEvent<int>();
 
 
 
@@ -161,7 +161,11 @@ Debug.Log("Create New Unity Plugin");
             plugin.Init();
 
             plugin.OnDeviceDisconnected.AddListener(OnDeviceDisconnected);
-            
+            plugin.onDeviceConnectedByAndroidOS.AddListener(OnDeviceConnectedByAndroidOSEvent.Invoke);
+            plugin.onDeviceConnecting.AddListener(OnDeviceConnectingEvent.Invoke);
+            plugin.OnDeviceDisconnected.AddListener(OnDeviceDisconnectingEvent.Invoke);
+            plugin.onDeviceFailedToConnect.AddListener(OnDeviceFailedToConnectEvent.Invoke);
+
         }
     }
     public void OnDeviceConnected(int i)

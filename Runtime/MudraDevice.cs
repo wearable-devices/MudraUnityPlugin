@@ -61,7 +61,7 @@ namespace Mudra.Unity
             get => MudraUnityManager.plugin.GetFirmwareVersion(identifier.id);
         }
 
-        public long getSerialNumber
+        public long serialNumber
         {
             get => MudraUnityManager.plugin.GetSerialNumber(identifier.id);
         }

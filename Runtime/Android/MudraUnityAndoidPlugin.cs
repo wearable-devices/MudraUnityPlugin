@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Layouts;
 
+
+
 namespace Mudra.Unity
 {
     public class MudraUnityAndroidPlugin : PluginPlatform
@@ -259,7 +261,7 @@ namespace Mudra.Unity
 
             void onDeviceDisconnected(AndroidJavaObject mudraDevice)
             {
-                Debug.Log("DeviceDisconnected");
+                //Debug.Log("DeviceDisconnected");
 
                 plugin.OnDeviceDisconnected.Invoke(devices.Count - 1);
                 devices.RemoveAt(devices.Count - 1);
@@ -268,7 +270,7 @@ namespace Mudra.Unity
             }
             void onDeviceConnectedByAndroidOS(AndroidJavaObject mudraDevice)
             {
-                plugin.onDeviceConnectedByAndroidOS.Invoke(javaObjectToIndexMap[mudraDevice]);
+               // plugin.onDeviceConnectedByAndroidOS.Invoke(javaObjectToIndexMap[mudraDevice]);
             }
 
             void onDeviceFailedToConnect(AndroidJavaObject mudraDevice)
@@ -279,7 +281,7 @@ namespace Mudra.Unity
 
             void onDeviceConnecting(AndroidJavaObject mudraDevice)
             {
-                plugin.onDeviceConnecting.Invoke(javaObjectToIndexMap[mudraDevice]);
+                //plugin.onDeviceConnecting.Invoke(javaObjectToIndexMap[mudraDevice]);
 
             }
 
@@ -322,16 +324,13 @@ namespace Mudra.Unity
 
             SetModelType(ModelType.Embedded, device.identifier.id);
             SetDeviceMode(DeviceMode.ANDROID, device.identifier.id);
-
-
-
-
-
         }
 
         #region General Use Commands
         public override void SetMainHand(int hand, int index)
         {
+            if (!HasDevices) return;
+
             AndroidJavaObject topValue;
             if (hand == 0)
             {
@@ -350,47 +349,46 @@ namespace Mudra.Unity
 
         public override int GetBatteryLevel(int index)
         {
+            if (!HasDevices) return 0;
+
             return devicesJO[index].Call<int>("getBatteryLevel");
         }
 
         public override string GetFirmwareVersion(int id)
         {
+            if (!HasDevices) return "...";
+
             return devicesJO[id].Call<string>("getFirmwareVersion");
         }
 
         public override long GetSerialNumber(int index)
         {
+            if (!HasDevices || devices.Count<index) return 0;
+
             return devicesJO[index].Call<long>("getSerialNumber");
         }
 
         public override string GetDeviceNumber(int index)
         {
+            if (!HasDevices || devices.Count < index) return "0";
+
             return devicesJO[index].Call<string>("getDeviceNumberByName");
         }
 
         public override void SendFirmwareCommand(byte[] command)
         {
+            if (!HasDevices) return;
+
             for (int i = 0; i < devicesJO.Count; i++)
             {
                 devicesJO[i].Call("sendGeneralCommand", command, null);
             }
         }
-        //public override void setAirMousePointerActive(bool state)
-        //{
-        //    for (int i = 0; i < devicesJO.Count; i++)
-        //    {
-        //        devicesJO[i].Call("setAirMousePointerActive", state);
-        //    }
-        //}
-        //public override void setAirMousePressReleaseActive(bool state)
-        //{
-        //    for (int i = 0; i < devicesJO.Count; i++)
-        //    {
-        //        devicesJO[i].Call("setAirMousePressReleaseActive", state);
-        //    }
-        //}
+     
         public override void setGestureActive(bool state, int index)
         {
+            if (!HasDevices || devices.Count < index) return;
+
             if (state)
                 devicesJO[index].Call("setOnGestureReady", new OnGestureReady(index));
 
@@ -400,6 +398,8 @@ namespace Mudra.Unity
 
         public override void setPressureActive(bool state, int index)
         {
+            if (!HasDevices || devices.Count < index) return;
+
 
             if (state)
             {
@@ -414,18 +414,11 @@ namespace Mudra.Unity
             }
 
         }
-        //IEnumerator SetCallbacks()
-        //{
-        //    yield return new WaitForSeconds(5f);
-
-        //    setGestureActive(true, 0);
-        //    setNavigationActive(true,0);
-        //    setPressureActive(true, 0);
-        //    SetQuaternionActive(true,0);
-        //}
 
         public override void setNavigationActive(bool state, int index)
         {
+            if (!HasDevices || devices.Count < index) return;
+
             if (state)
             {
 
@@ -449,6 +442,8 @@ namespace Mudra.Unity
 
         public override void SetQuaternionActive(bool state, int index)
         {
+            if (!HasDevices || devices.Count < index) return;
+
             if (state)
             {
                 devicesJO[index].Call("setOnImuQuaternionReady", new OnImuQuaternionReady(index));
@@ -461,12 +456,16 @@ namespace Mudra.Unity
 
         public override void setFirmwareTarget(FirmwareTarget firmwareTarget, bool active, int index)
         {
+            if (!HasDevices || devices.Count < index) return;
+
             AndroidJavaObject target = new AndroidJavaClass("mudraAndroidSDK.enums.FirmwareTarget").GetStatic<AndroidJavaObject>(firmwareTarget.ToString());
 
             devicesJO[index].Call("setFirmwareTarget", target, active);
         }
         public override void SetModelType(ModelType type, int index)
         {
+            if (!HasDevices || devices.Count < index) return;
+
             AndroidJavaObject target = new AndroidJavaClass("mudraAndroidSDK.enums.ModelType").GetStatic<AndroidJavaObject>(type.ToString());
 
             devicesJO[index].Call<bool>("setModelType", target);
@@ -474,6 +473,8 @@ namespace Mudra.Unity
 
         public override void SetDeviceMode(DeviceMode deviceMode, int index)
         {
+            if (!HasDevices || devices.Count < index) return;
+
             AndroidJavaObject target = new AndroidJavaClass("mudraAndroidSDK.enums.DeviceMode").GetStatic<AndroidJavaObject>(deviceMode.ToString());
 
             devicesJO[index].Call("setDeviceMode", target);
@@ -551,63 +552,6 @@ namespace Mudra.Unity
         {
             throw new NotImplementedException();
         }
-
-
-
-
-
-
-
-        //public override void ChangeScale(int Scale, int index)
-        //{
-
-        //    switch (Scale)
-        //    {
-        //        case 0:
-        //            devicesJO[index].Call("sendGeneralCommand", MudraConstants.PRESSURE_SCALE_LOW, null);
-        //            break;
-        //        case 1:
-        //            devicesJO[index].Call("sendGeneralCommand", MudraConstants.PRESSURE_SCALE_MID, null);
-        //            break;
-        //        case 2:
-        //            devicesJO[index].Call("sendGeneralCommand", MudraConstants.PRESSURE_SCALE_HIGH, null);
-        //            break;
-
-        //    }
-
-        //}
-
-        //public override void SetPressureSensitivity(int sens, int index)
-        //{
-        //    byte[] command = { };
-
-
-
-        //    switch (sens)
-        //    {
-        //        case 0:
-        //            command = MudraConstants.PRESSURE_SENS_LOW;
-        //            break;
-        //        case 1:
-        //            command = MudraConstants.PRESSURE_SENS_MIDLOW;
-        //            break;
-        //        case 2:
-        //            command = MudraConstants.PRESSURE_SENS_MID;
-
-        //            break;
-        //        case 3:
-        //            command = MudraConstants.PRESSURE_SENS_MIDHIGH;
-
-        //            break;
-        //        case 4:
-        //            command = MudraConstants.PRESSURE_SENS_HIGH;
-
-        //            break;
-        //    }
-        //    devicesJO[index].Call("sendGeneralCommand", command, null);
-
-
-        //}
 
         #endregion
 
