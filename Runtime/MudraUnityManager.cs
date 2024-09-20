@@ -34,6 +34,10 @@ public class MudraUnityManager : MonoBehaviour
 
 
 
+    public MudraDevice GetDevice(int index)
+    {
+        return PluginPlatform.devices[index];
+    }
     public void SetNavigationState(bool state, int index)
     {
         plugin.setNavigationActive(state, index);

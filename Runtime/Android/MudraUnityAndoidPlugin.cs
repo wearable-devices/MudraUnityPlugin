@@ -151,7 +151,6 @@ namespace Mudra.Unity
 
             void run(float pressure)
             {
-                Debug.Log("aaa");
                 devices[id].OnPressure(pressure /*/ 100.0f*/);
 
 
@@ -396,7 +395,7 @@ namespace Mudra.Unity
                 devicesJO[index].Call("setOnGestureReady", new OnGestureReady(index));
 
             else
-                devicesJO[index].Call("setOnGestureReady", null);
+                devicesJO[index].Call("disableGesture");
         }
 
         public override void setPressureActive(bool state, int index)
@@ -411,7 +410,7 @@ namespace Mudra.Unity
             else
             {
 
-                devicesJO[index].Call("setOnPressureReady", null);
+                devicesJO[index].Call("disablePressure");
             }
 
         }
@@ -440,9 +439,9 @@ namespace Mudra.Unity
             else
             {
 
-                devicesJO[index].Call("setOnNavigationReady", null);
+                devicesJO[index].Call("disableNavigation");
                 // setNavigationActive(false);
-                devicesJO[index].Call("setOnButtonChanged", null);
+                devicesJO[index].Call("disableButtonChanged");
 
 
             }
@@ -456,7 +455,7 @@ namespace Mudra.Unity
             }
             else
             {
-                devicesJO[index].Call("setOnImuQuaternionReady", null);
+                devicesJO[index].Call("disableQuaternion");
             }
         }
 
